@@ -1,0 +1,108 @@
+<!doctype html>
+　　<!--通过指定html命名空间的名字来定义自定义标签；默认的一些标签pp等都在html默认的命名空间下。-->
+<html>
+  　　<!--第一步：自定义的标签可以放在自定义的命名空间下，可通过xmlns:命名空间名来指定-->
+　　<htmlxmlns:mine>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      #messages { margin-bottom: 40px }
+
+  　　mine:tag {
+      font-size: .36rem;  
+      font-weight: bold;
+      color: red;
+      }
+    </style>
+  </head>
+  <body>
+  　<!--第二步：自定义标签需要带命名空间名"命名空间名:标签名"-->
+  　<mine:tag>thisiscustomtext</mine:tag>
+    <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+      x-foo {
+        color: red;
+        transition:  color 1s ease-in 1s;
+        -webkit-transform: color 1s ease-in 1s;
+      }
+      x-foo:unresolved {
+        color: green;
+      }
+    </style>
+
+    <template id="sdtemplate">
+      <style>
+      /* /* 内部样式以及实现内容是与外界隔绝的  ,内部优先级高于外部优先级  */
+      p {
+        color: red;
+      }
+      #sdtemplate {
+        /* opacity: 1; */
+        transition: background 1000ms;
+        background: red;
+      }
+      #sdtemplate:unresolved {
+        /* opacity: 0; */
+        background: green;
+      }
+      </style>
+      <p>I'm in Shadow DOM. My markup was stamped from a &lt;template&gt;.</p>
+    </template>
+
+    <script>
+
+
+        var MyButton = document.registerElement('ny-button',{
+          prototype: Object.create(HTMLElement.prototype)
+        });
+        console.log('MyButton',MyButton,typeof MyButton); // MyButton ƒ ny-button() { [native code] } function
+        document.body.appendChild(new MyButton());
+        var Tabs = document.createElement('tabs',{
+          prototype: Object.create(HTMLUnknownElement.prototype)
+        });
+        console.log('tabs',Tabs.__proto__)
+        document.body.appendChild(Tabs);
+        var superButton = document.createElement('button','super-button'); // 这是接收第二个参数为 is="" 属性的 document.createElement() 重载版本。
+        document.body.appendChild(superButton);
+        console.log('super-button',superButton);
+        var XFoo = Object.create(HTMLElement.prototype); // Element
+        XFoo.func = function (params) {
+          alert('hello!')
+        }
+        Object.defineProperty(XFoo,'BAR',{value:'ONLYREAD',writable:false})
+        var xFoo = document.registerElement('x-foo',{
+          prototype: XFoo
+        }) // 道道得是一个有构造器得得类  HTMLElement 嗲用构造器后返回节点类型 (node)
+        var xfoo = document.createElement('x-foo') // HTMLElement  node 
+        xfoo.innerHTML = '<div>x-foo</div>';
+        document.body.appendChild(xfoo);
+        console.log('xFoo', xfoo, typeof xfoo, xFoo, typeof xFoo, xfoo === XFoo, xfoo.__proto__,XFoo.__proto__); //  xfoo  是节点对象,Object  而 XFoo 是一个函数，或则说是类，因为js中类是
+        // DOM 生命周期 createdCallback 	创建元素实例 attachedCallback 向文档插入实例 detachedCallback 从文档中移除实例 attributeChangedCallback(attrName, oldVal, newVal) 添加，移除，或修改一个属性
+        
+        // 创建shadown DOM
+        var sd_proto = Object.create(HTMLElement.prototype,{
+            createdCallback: {
+              value: function (params) {
+                var t = document.querySelector('#sdtemplate')
+                console.log('t',t)
+                var clone = document.importNode(t.content,true)
+                this.createShadowRoot().appendChild(clone)
+              }
+            }
+        });
+        var myTemplate = document.registerElement('my-template',{prototype: sd_proto});
+        document.body.appendChild(new myTemplate());
+        //  shadow DMO 是对DOM的封装，对外影厂呢日不细节，内部样式不感染到外部就像inpuit本事呢也是由于div封装的。由此还阴盛出了templtae 的概念  这样做的目的试了更好的使用WEB Componment
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>操作DOM</title>
+  </head>
+  <style>
+    #form {
+      border: gray solid 1px;
+    }
+    .input {
+      color: red;
+    }
+  </style>
+  <body>
+    <form action="" id='form'>
+      <input type="text" value="hello" class="input">
+    </form>
+
+    <script>
+      var all = document.querySelectorAll();
+      var form = document.querySelector('#form')
+      var input = document.getElementsByClassName('input')
+      console.log('all', all, 'form', form, 'input', input )
+
+    </script>
+  </body>
+</html>
