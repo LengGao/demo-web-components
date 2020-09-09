@@ -5,6 +5,9 @@
  * 2，自定义内置元素：这些元素继承自 - 并扩展 - 内置HTML元素
  * window.customElements;
  * customElements.define(name, constructor, options); option 目前只有一个选项 extends 由于实现 自定义内置元素也就是 is = 'xxx'
+ * CustomElementRegistry 的get()方法返回以前定义自定义元素的构造函数 name 你想要返回引用的构造函数的自定义元素的名字。
+ * CustomElementRegistry接口的upgrade()方法将更新节点子树中所有包含阴影的自定义元素，甚至在它们连接到主文档之前也是如此。root : 待升级的包含阴影的派生元素节点 。如果没有可升级的派生实例，则不会抛出异常。
+ *  当一个元素被定义时CustomElementRegistry 中的方法whenDefined() 接口返回  Promise.name 自定义元素的名称,返回 当自定义元素被定义时一个Promise 返回{jsxref("undefined")}}. 如果自定义元素已经被定义，则resolve立即执行。这也就是异步组件的实现
  */
 class PopUpInfo extends HTMLElement {
   constructor(){
