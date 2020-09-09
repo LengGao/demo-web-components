@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <title>旧方式创建自定义元素</title>  
+  <head>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="javascripts/old_create.js" defer></script>
+  </head>
+  <body>
+    <h1>Web Components</h1>
+    <my-slef>
+      UNRESOLVED 元素
+      由于自定义元素是通过脚本执行 document.registerElement() 注册的，因此 它们可能在元素定义被注册到浏览器之前就已经声明或创建过了。例如：你可以先在页面中声明 <x-tabs>，以后再调用 document.registerElement('x-tabs')。
+      在被提升到其定义之前，这些元素被称为 unresolved 元素。它们是拥有合法自定义元素名的 HTML 元素，只是还没有注册成为自定义元素。
+      <p>
+        unresolved 元素 继承自	HTMLElement
+        未知元素  继承自	HTMLUnknownElement
+      </p>
+      <!-- 类型	继承自	示例
+      unresolved 元素	HTMLElement	<x-tabs>、<my-element>、<my-awesome-app>
+      未知元素	HTMLUnknownElement	<tabs>、<foo_bar> -->
+    </my-slef>
+    
+    <o>
+      Shadow DOM 为自定义元素提供了：
+      1.一种隐藏内部实现的方法，从而将用户与血淋淋的实现细节隔离开。
+      2.简单有效的样式隔离。
+    </o>
+    <!-- 新增标签，模板定义， -->
+    <template id="sdtemplate">
+      <style>
+        p { color: orange; }
+      </style>
+      <p>I'm in Shadow DOM. My markup was stamped from a &lt;template&gt;.</p>
+    </template>
+    <p>
+      Shadow DOM 为元素增加了样式封装的特性。Shadow Root 中定义的样式不会暴露到宿主外部或对页面产生影响。对自定义元素来说，元素本身就是宿主。样式封装的属性也使得自定义元素能够为自己定义默认样式。
+      使用 :unresolved 伪类避免无样式内容闪烁（FOUC）
+      为了缓解无样式内容闪烁的影响，自定义元素规范提出了一个新的 CSS 伪类 :unresolved。在浏览器调用你的 createdCallback()（见生命周期回调方法一节）之前，这个伪类都可以匹配到 unresolved 元素。一旦产生调用，就意味着元素已经完成提升，成为它被定义的形态，该元素就不再是一个 unresolved 元素了。
+    </p>
+    <style>
+      /* 现在许多浏览器还不支持 :unresolved */
+      /* my-shadow  {
+        opacity: 0;
+        transition: opacity 300ms;
+      }
+      my-shadow :unresolved {
+        opacity: 1;
+        background-color: black;
+      } */
+    </style>
+    <my-shadow style="background: beige;">
+      注册后渐显的 my-shadow 标签：
+    </my-shadow>
+  </body>
+
+</html>

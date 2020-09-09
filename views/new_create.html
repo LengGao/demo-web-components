@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>新方式自定义元素</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="javascripts/new_create.js" defer></script>
+  </head>
+  <body>
+    <!-- 自主定制元素 -->
+    /*----------- 自主定制元素 ------------*/
+    <popup-info img="http://b.hiphotos.baidu.com/image/pic/item/279759ee3d6d55fbb3586c0168224f4a20a4dd7e.jpg" text="Your card validation code (CVC) is an extra security feature — it is the last 3 or 4 numbers on the back of your card."></popup-info>
+    <br />
+    <!-- 自定义内置元素 -->
+    /*----------- 自定义内置元素 ------------*/
+    <p is="word-count">扩展内置元素</p>
+    <br />
+    <!-- 生命周期 -->
+    /*----------- 生命周期 ------------*/
+    <div id="lifecycled">
+      <custom-square></custom-square>
+    </div>
+    <div>
+      <button class="add">add</button>
+      <button class="update">update</button>
+      <button class="remove">remove</button>
+    </div>
+    <br />
+    <!-- 使用template 与 slot -->
+    /*----------- template slot ------------*/
+    <template id="my-paragraph">
+      <!-- 在template 标签下的内容都属于DocumentFragment（文档片段） 它不是真实DOM树的一部分，它的改变不会触发真是DOM树的渲染 -->
+      <!-- <duv>我是默认内容</duv> -->
+      <!-- <p>My paragraph</p> -->
+      <!-- <p><slot name="my-text">My default text</slot></p> -->
+      <!-- <p><slot>My default text</slot></p> -->
+      <slot></slot>
+    </template>
+    <my-paragraph>
+      <div>元素有shadowDOM但是没有Slot，此文本内容不显示</div>
+      <!-- <!-- <span slot="my-text">Let's have some different text!</span> -->
+    </my-paragraph>
+  
+  </body>
+</html>
